@@ -393,9 +393,9 @@ class BaseRepl(BpythonRepl):
         # filenos match the backing device for libs that expect it,
         # but writing to them will do weird things to the display
         self.stdout = FakeOutput(self.coderunner, self.send_to_stdout,
-                                 fileno=sys.__stdout__.fileno())
+                                 real_fileobj=sys.__stdout__)
         self.stderr = FakeOutput(self.coderunner, self.send_to_stderr,
-                                 fileno=sys.__stderr__.fileno())
+                                 real_fileobj=sys.__stderr__)
         self.stdin = FakeStdin(self.coderunner, self, self.edit_keys)
 
         # next paint should clear screen
