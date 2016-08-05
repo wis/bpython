@@ -17,8 +17,8 @@ class TestCodeRunner(unittest.TestCase):
     def test_simple(self):
         c = CodeRunner(request_refresh=lambda: self.orig_stdout.flush() or
                        self.orig_stderr.flush())
-        stdout = FakeOutput(c, lambda *args, **kwargs: None)
-        stderr = FakeOutput(c, lambda *args, **kwargs: None)
+        stdout = FakeOutput(c, lambda *args, **kwargs: None, None)
+        stderr = FakeOutput(c, lambda *args, **kwargs: None, None)
         sys.stdout = stdout
         sys.stdout = stderr
         c.load_code('1 + 1')
@@ -33,8 +33,8 @@ class TestCodeRunner(unittest.TestCase):
         def ctrlc():
             raise KeyboardInterrupt()
 
-        stdout = FakeOutput(c, lambda x: ctrlc())
-        stderr = FakeOutput(c, lambda *args, **kwargs: None)
+        stdout = FakeOutput(c, lambda x: ctrlc(), None)
+        stderr = FakeOutput(c, lambda *args, **kwargs: None, None)
         sys.stdout = stdout
         sys.stderr = stderr
         c.load_code('1 + 1')
@@ -47,5 +47,5 @@ class TestFakeOutput(unittest.TestCase):
         self.assertIsInstance(s, type(u''))
 
     def test_bytes(self):
-        out = FakeOutput(mock.Mock(), self.assert_unicode)
+        out = FakeOutput(mock.Mock(), self.assert_unicode, None)
         out.write('native string type')
